@@ -451,10 +451,16 @@ jQuery( function( $ ) {
 					success:	function( result ) {
 						try {
 							if ( 'success' === result.result ) {
+								var url = null;
 								if ( -1 === result.redirect.indexOf( 'https://' ) || -1 === result.redirect.indexOf( 'http://' ) ) {
-									window.location = result.redirect;
+									url = result.redirect;
 								} else {
-									window.location = decodeURI( result.redirect );
+									url = decodeURI( result.redirect );
+								}
+								if (window.self !== window.top) {
+									window.top.location.href = url;
+								} else {
+									window.location = url;
 								}
 							} else if ( 'failure' === result.result ) {
 								throw 'Result failure';
